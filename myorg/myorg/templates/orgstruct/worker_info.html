@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %} Информация о работнике {{ worker.name }} {% endblock %}
+
+{% block content %}
+    {% if worker %}
+     <h2>{{ worker.name }}</h2>
+     <p>Должность: {{ worker.title }}</p>
+     <p>Дата устройства: {{ worker.date_employment }}</p>
+     <p>Зарплата: {{ worker.salary_range }}</p>
+    {% else %}
+        Данных нет
+    {% endif %}
+{% endblock %}

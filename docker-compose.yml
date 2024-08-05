@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  app:
+    image: org-hierarchy
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    environment:
+      PG_HOST: pg
+      SECRET_KEY: ${SECRET_KEY}
+      DEBUG: ${DEBUG}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PG_PORT: ${PG_PORT}
+    healthcheck:
+      test: [ 'CMD', 'curl', '-v', 'http://127.0.0.1:8000/admin' ]
+      interval: 10s
+      timeout: 10s
+      retries: 2
+      start_period: 20s
+    ports:
+      - 8000:8000
+    links:
+      - pg
+    command: >
+      sh -c "python manage.py migrate &&
+            python manage.py upload_data &&
+            python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      pg:
+        condition: service_healthy
+    networks:
+      - services
+
+  pg:
+    image: postgres:12
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGDATA: /var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - services
+volumes:
+  postgres_data:
+
+networks:
+  services:
