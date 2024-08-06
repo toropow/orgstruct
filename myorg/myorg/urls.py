@@ -17,8 +17,10 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
+from orgstruct.views import hierarchy_company
 
 urlpatterns = [
+    path("", hierarchy_company, name="home"),
     path("orgstruct", include("orgstruct.urls")),
     path("admin/", admin.site.urls),
 ]
