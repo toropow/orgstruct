@@ -34,8 +34,8 @@ def hierarchy_company(request):
         ON d.id = p.id
         WHERE p.id <> 1)
         select 1 as id, jsonb_agg(r1.res) as data from (
-        select jsonb_build_object('level', r.depth, 'departments', jsonb_agg(jsonb_build_object('departments_name', r.name, 'workers', workers))) as res from (
-        select od.id, od.name, array_agg(ow."name") as workers, depth from levels od
+        select jsonb_build_object('level', r.depth+1, 'departments', jsonb_agg(jsonb_build_object('departments_name', r.name, 'workers', workers))) as res from (
+        select od.id, od.name, array_agg(jsonb_build_object('name', ow."name", 'id', ow.id)) as workers, depth from levels od
         left join orgstruct_worker ow ON ow.department_id = od.id 
         group by od.id, od.name, depth
         order by depth) as r
