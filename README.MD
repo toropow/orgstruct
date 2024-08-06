@@ -34,6 +34,6 @@
 - Выполнить: python myorg\manage.py test myorg.apps.orgstruct
 
 
-Открыть в браузере http://127.0.0.1:8000/orgstruct/hierarchy/
+Открыть в браузере http://127.0.0.1:8000
 
 Задание https://docs.google.com/document/d/1mbZvp7GbTknanOjKF9IrPB7Zu4-tBnOHf09__HBLkqs/edit

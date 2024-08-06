@@ -1,32 +1,52 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/menu.css' %}" >
+{% endblock %}}
 {% block title %} Иерархия организации {% endblock %}
+
+{% block content %}
  <div class="row">
     <div class="col-md-8 offset-md-2">
-{% block content %}
     {% if hierarchy %}
 
     {% for h in hierarchy.data %}
-    <ul>
-    <li>Уровень департамента {{ h.level }}</li>
-    <ul>
+    <ul id="myUL">
+    <li><span class="caret"><b>Уровень департамента: {{ h.level }}</b></span>
+    <ul class="nested">
     {% for departments_items in h.departments %}
-    <li>Название департамента {{ departments_items.departments_name }}</li>
-
-
-        <li>Сотрудники: </li>
+    <li>Название департамента: {{ departments_items.departments_name }}
+        <li><span class="caret">Сотрудники:</span>
+        <ul class="nested">
     {% for worker in departments_items.workers %}
-        <li><a href="{% url 'orgstruct:detail_worker' worker.id %}">{{worker.name}}</a></li>
+        <li><a href="{% url 'orgstruct:detail_worker' worker.id %}">{{worker.name}}</a>
+    {% endfor %}
+        </ul>
+    {% endfor %}
     {% endfor %}
 
-    {% endfor %}
-    {% endfor %}
 
+        </li>
+        </li>
+        </li>
+        </li>
         </ul>
         </ul>
+
     {% else %}
         Данных нет
     {% endif %}
     </div>
  </div>
+<script>
+var toggler = document.getElementsByClassName("caret");
+var i;
+
+for (i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+    this.parentElement.querySelector(".nested").classList.toggle("active");
+    this.classList.toggle("caret-down");
+  });
+}
+</script>
 {% endblock %}
