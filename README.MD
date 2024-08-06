@@ -30,6 +30,9 @@
 ### Запуск в докере:
 - Выполнить: docker compose --env-file .\myorg\myorg\.env up
 
+### Запуск тестов:
+- Выполнить: python myorg\manage.py test myorg.apps.orgstruct
+
 
 Открыть в браузере http://127.0.0.1:8000/orgstruct/hierarchy/
 

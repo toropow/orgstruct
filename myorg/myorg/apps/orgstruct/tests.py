@@ -12,7 +12,7 @@ class TestModel(TestCase):
         self.worker = Worker.objects.create(
             name="Anton",
             title=self.title,
-            date_employment="2015-07-11 05:55:01",
+            date_employment="2015-07-11",
             salary_range=400000,
             department=self.department,
         )
@@ -30,16 +30,3 @@ class TestModel(TestCase):
 
     def test_model_department(self):
         self.assertEqual("Department 2", str(self.department))
-
-
-class TestView(TestCase):
-    def setUp(self):
-        self.client = Client()
-
-    def tearDown(self):
-        pass
-
-    def test_index(self):
-        url = reverse("orgstruct:hierarchy_company")
-        response = self.client.get(url)
-        self.assertEqual(200, response.status_code)

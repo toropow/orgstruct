@@ -56,7 +56,7 @@ def hierarchy_company(request):
     return render(request, "orgstruct/hierarchy.html", {"hierarchy": hierarchy})
 
 
-def detail_worker(request, worker_id):
+def detail_worker(request, worker_id=1):
     try:
         worker = Worker.objects.get(id=worker_id)
     except:
